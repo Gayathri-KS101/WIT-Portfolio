@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Check if user is authenticated
+    function isAuth() {
+      return request.auth != null;
+    }
+    
+    // Check if user is accessing their own data
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow read: if isAuth() && isOwner(userId);
+      allow create: if isAuth() && isOwner(userId);
+      allow update: if isAuth() && isOwner(userId);
+      
+      // Progress subcollection
+      match /progress/{progressId} {
+        allow read, write: if isAuth() && isOwner(userId);
+      }
+      
+      // Feedback subcollection
+      match /feedback/{feedbackId} {
+        allow read, write: if isAuth() && isOwner(userId);
+      }
+    }
+    
+    // Guide content - readable by all authenticated users
+    match /guides/{document=**} {
+      allow read: if isAuth();
+      allow write: if false;  // Only admin can write guides
+    }
+  }
+}
