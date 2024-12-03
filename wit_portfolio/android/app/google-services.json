@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "958323945763",
+    "project_id": "wit-portfolio",
+    "storage_bucket": "wit-portfolio.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:958323945763:android:5fcc223e14505fb5189c96",
+        "android_client_info": {
+          "package_name": "com.wit.po"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhPe5NJ9KIT7IjtXkrvAr7tjnCCO4yZAU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

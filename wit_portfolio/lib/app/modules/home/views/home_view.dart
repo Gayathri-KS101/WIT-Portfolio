@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
@@ -10,146 +9,165 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF1B4D3E), // Dark pastel green
-              Color(0xFF2A6B55), // Lighter pastel green
-            ],
+      appBar: AppBar(
+        title: Text(
+          'WIT Portfolio',
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Navigation Bar
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'WIT GEC',
-                      style: GoogleFonts.poppins(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        ElevatedButton(
-                          onPressed: () => Get.toNamed('/auth'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Color(0xFF1B4D3E),
-                          ),
-                          child: Text('Login'),
-                        ),
-                        SizedBox(width: 10),
-                        ElevatedButton(
-                          onPressed: () => Get.toNamed('/auth'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF2A6B55),
-                            foregroundColor: Colors.white,
-                          ),
-                          child: Text('Sign Up'),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+        backgroundColor: Color(0xFF1B4D3E),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout, color: Colors.white),
+            onPressed: controller.signOut,
+          ),
+        ],
+      ),
+      body: Row(
+        children: [
+          // Navigation Rail
+          NavigationRail(
+            selectedIndex: controller.selectedIndex.value,
+            onDestinationSelected: controller.changeSection,
+            labelType: NavigationRailLabelType.all,
+            backgroundColor: Color(0xFF1B4D3E),
+            selectedIconTheme: IconThemeData(color: Colors.white),
+            unselectedIconTheme: IconThemeData(color: Colors.white70),
+            selectedLabelTextStyle: GoogleFonts.poppins(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+            unselectedLabelTextStyle: GoogleFonts.poppins(
+              color: Colors.white70,
+            ),
+            destinations: const [
+              NavigationRailDestination(
+                icon: Icon(Icons.chat),
+                label: Text('Chat Room'),
               ),
-
-              // Hero Section
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 60.0,
-                  horizontal: 20.0,
-                ),
-                child: Column(
-                  children: [
-                    AnimatedTextKit(
-                      animatedTexts: [
-                        TypewriterAnimatedText(
-                          'Women in Tech GEC Palakkad',
-                          textStyle: GoogleFonts.poppins(
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          speed: Duration(milliseconds: 100),
-                        ),
-                      ],
-                      totalRepeatCount: 1,
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      'Empowering women in technology through community, education, and innovation.',
-                      style: GoogleFonts.poppins(
-                        fontSize: 20,
-                        color: Colors.white.withOpacity(0.9),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
+              NavigationRailDestination(
+                icon: Icon(Icons.book),
+                label: Text('Learn'),
               ),
-
-              // Open Mic Section
-              Container(
-                margin: EdgeInsets.all(20),
-                padding: EdgeInsets.all(30),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      'O-penmic Session 5/8',
-                      style: GoogleFonts.poppins(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF1B4D3E),
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    Text(
-                      'Open discussion for girls to talk more about tech and projects in groups within campus',
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        color: Colors.black87,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-
-              // Placeholder for Women in Tech Images
-              // TODO: Add image carousel here
-              Container(
-                height: 300,
-                margin: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Center(
-                  child: Text(
-                    'Image Gallery Coming Soon',
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
+              NavigationRailDestination(
+                icon: Icon(Icons.smart_toy),
+                label: Text('AI Chat'),
               ),
             ],
           ),
+          
+          // Main Content Area
+          Expanded(
+            child: Obx(() {
+              switch (controller.selectedIndex.value) {
+                case 0:
+                  return Center(
+                    child: Text(
+                      'Chat Room Coming Soon',
+                      style: GoogleFonts.poppins(fontSize: 24),
+                    ),
+                  );
+                case 1:
+                  return Container(
+                    padding: EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Portfolio Development Guide',
+                          style: GoogleFonts.poppins(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          'Choose Your Path:',
+                          style: GoogleFonts.poppins(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Expanded(
+                          child: ListView(
+                            children: [
+                              _buildPathCard(
+                                'Beginner',
+                                'HTML, CSS, JavaScript',
+                                'Perfect for getting started with web development',
+                                Icons.star,
+                              ),
+                              SizedBox(height: 20),
+                              _buildPathCard(
+                                'Intermediate',
+                                'React, Flutter',
+                                'Advanced frameworks for modern applications',
+                                Icons.code,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                case 2:
+                  return Center(
+                    child: Text(
+                      'AI Chat Coming Soon',
+                      style: GoogleFonts.poppins(fontSize: 24),
+                    ),
+                  );
+                default:
+                  return Container();
+              }
+            }),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPathCard(String title, String technologies, String description, IconData icon) {
+    return Card(
+      elevation: 4,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, size: 30, color: Color(0xFF1B4D3E)),
+                SizedBox(width: 10),
+                Text(
+                  title,
+                  style: GoogleFonts.poppins(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Text(
+              technologies,
+              style: GoogleFonts.poppins(
+                fontSize: 18,
+                color: Colors.grey[700],
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              description,
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
         ),
       ),
     );
